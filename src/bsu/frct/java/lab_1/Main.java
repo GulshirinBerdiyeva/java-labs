@@ -89,7 +89,11 @@ public class Main {
             }
 
             System.out.println("\n\tFull sum calories of your breakfast are " + sum);
+<<<<<<< HEAD
             System.out.println("Have a nice day °l°");
+=======
+            System.out.println("Thank you ;) \tHave a nice day °l°");
+>>>>>>> e36ae46... ADDED: CommentInMainClass
         }
 
     }
