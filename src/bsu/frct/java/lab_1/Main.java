@@ -11,7 +11,7 @@ public class Main {
         byte sort = 0;
         byte calories = 0;
 
-        for(int i  = 0; i < args.length; ++i) {
+        for (int i = 0; i < args.length; ++i) {
             String[] parts = args[i].split("/");
 
             try {
@@ -19,21 +19,21 @@ public class Main {
                 Constructor constructor;
                 if (parts.length == 1) {
                     constructor = myClass.getConstructor();
-                    breakfast[i] = (Food)constructor.newInstance();
+                    breakfast[i] = (Food) constructor.newInstance();
                 }
 
                 if (parts.length == 2) {
                     constructor = myClass.getConstructor(String.class);
-                    breakfast[i] = (Food)constructor.newInstance(parts[1]);
+                    breakfast[i] = (Food) constructor.newInstance(parts[1]);
                 }
 
                 if (parts.length == 3) {
                     constructor = myClass.getConstructor(String.class, String.class);
-                    breakfast[i] = (Food)constructor.newInstance(parts[1], parts[2]);
+                    breakfast[i] = (Food) constructor.newInstance(parts[1], parts[2]);
                 }
             } catch (NoSuchMethodException | ClassNotFoundException e) {
                 if (!args[i].startsWith("-")) {
-                    System.out.println(args[i] + "..Couldn't be added in breakfast..");
+                    System.out.println(args[i] + "___Couldn't be added in breakfast");
                 }
 
                 if (args[i].equals("-sort")) {
@@ -48,9 +48,9 @@ public class Main {
             }
         }
 
-        System.out.println("\n\tYour breakfast...");
-        for (Food b : breakfast){
-            if (b != null){
+        System.out.println("\n\t___Your breakfast___");
+        for (Food b : breakfast) {
+            if (b != null) {
                 System.out.println(b);
             }
         }
@@ -65,36 +65,67 @@ public class Main {
                     if (f2 == null) {
                         return -1;
                     } else {
-                        return ((Food)f2).calculateCalories().compareTo(((Food)f1).calculateCalories());
+                        return ((Food) f2).calculateCalories().compareTo(((Food) f1).calculateCalories());
                     }
                 }
             });
 
-            System.out.println("\n\tYour breakfast after sort...");
-            for (Food b : breakfast){
-                if (b != null){
+            System.out.println("\n\t___Your breakfast after sort___");
+            for (Food b : breakfast) {
+                if (b != null) {
                     System.out.println("calories of " + b + " are " + b.calculateCalories());
                 }
             }
         }
 
-        System.out.println("\n");
+
+        Food[] breakfastCopy = new Food[20];
+        int i = 0;
+        for (Food b : breakfast) {
+            if (b != null) {
+                boolean temp = false;
+                for (Food b2 : breakfastCopy) {
+                    if (b.equals(b2)) {
+                        temp = true;
+                    }
+                }
+                if (!temp) {
+                    breakfastCopy[i++] = b;
+                }
+            }else {
+                break;
+            }
+        }
+
+
+        System.out.println("\n\t___Amount of products___");
+        for (Food b : breakfastCopy) {
+            if (b != null) {
+                byte count = 0;
+                for (Food b2 : breakfast){
+                    if (b.equals(b2)){
+                        count++;
+                    }
+                }
+                System.out.println(b + " = " + count);
+            }
+        }
+
+
+        System.out.println("\n\t___After breakfast___");
         if (calories > 0) {
             int sum = 0;
-            for (Food b : breakfast){
-                if (b != null){
+            for (Food b : breakfast) {
+                if (b != null) {
                     sum += b.getCalories();
                     b.consume();
                 }
             }
 
-            System.out.println("\n\tFull sum calories of your breakfast are " + sum);
-<<<<<<< HEAD
-            System.out.println("Have a nice day °l°");
-=======
-            System.out.println("Thank you ;) \tHave a nice day °l°");
->>>>>>> e36ae46... ADDED: CommentInMainClass
+            System.out.println("\n\t___Full sum calories of your breakfast = " + sum);
+            System.out.println("\n\t___Have a nice day °l°___\n");
         }
 
     }
 }
+

@@ -27,7 +27,7 @@ public abstract class Food implements Consumable, Nutritious {
 
     public boolean equals(Object obj) {
         if (obj instanceof Food) {
-            return this.name == null && ((Food)obj).name == null ? false : this.name.equals(((Food)obj).name);
+            return (this.name != null || ((Food) obj).name != null) && this.name.equals(((Food) obj).name);
         } else {
             return false;
         }
