@@ -98,7 +98,45 @@ public class MainFrame extends JFrame {
         hboxResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
-
+        Box hboxButtons = Box.createHorizontalBox();
+        JButton buttonCalc = new JButton("Calculate");
+        buttonCalc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Double result = Double.parseDouble(textFieldResult.getText());
+                    Double x = Double.parseDouble(textFieldX.getText());
+                    Double y = Double.parseDouble(textFieldY.getText());
+                    Double z = Double.parseDouble(textFieldZ.getText());
+                    if (formulaId == 1){
+                        result = calculate1(x, y, z);
+                    }   else{
+                        result = calculate2(x, y, z);
+                    }
+                    textFieldResult.setText(result.toString());
+                }   catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Wrong number format",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        JButton buttonReset = new JButton("Reset");
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textFieldResult.setText("0");
+                textFieldX.setText("0");
+                textFieldY.setText("0");
+                textFieldZ.setText("0");
+            }
+        });
+        hboxButtons.add(Box.createHorizontalGlue());
+        hboxButtons.add(buttonCalc);
+        hboxButtons.add(Box.createHorizontalStrut(30));
+        hboxButtons.add(buttonReset);
+        hboxButtons.add(Box.createHorizontalGlue());
+        hboxButtons.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     }
 
 
