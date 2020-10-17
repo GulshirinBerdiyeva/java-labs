@@ -3,6 +3,7 @@ package bsu.frct.java.lab2;
 import javafx.scene.control.RadioButton;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,6 +44,11 @@ public class MainFrame extends JFrame {
     }
 
 
+    public MainFrame(){
+        super("Formula calculation...");
+
+
+    }
     public static void main(String[] args) {
 
     }
