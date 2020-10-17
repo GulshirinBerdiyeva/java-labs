@@ -137,6 +137,20 @@ public class MainFrame extends JFrame {
         hboxButtons.add(buttonReset);
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+
+        Box contentBox = Box.createVerticalBox();
+        contentBox.add(Box.createVerticalGlue());
+        contentBox.add(hboxFormulaType);
+        contentBox.add(hboxVariables);
+        contentBox.add(hboxResult);
+        contentBox.add(hboxButtons);
+        contentBox.add(Box.createVerticalGlue());
+        contentBox.setBorder(BorderFactory.createLineBorder(Color.PINK));
+        getContentPane().add(contentBox, BorderLayout.CENTER);
+
+
+
     }
 
 
