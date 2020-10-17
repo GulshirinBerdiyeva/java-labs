@@ -11,8 +11,8 @@ import static java.lang.Math.*;
 
 public class MainFrame extends JFrame {
 
-    private static final int WIDTH = 400,
-                             HEIGHT = 320;
+    private static final int WIDTH = 1000,
+                             HEIGHT = 500;
     private JTextField textFieldResult,
                        textFieldX,
                        textFieldY,
@@ -90,6 +90,7 @@ public class MainFrame extends JFrame {
         Box hboxResult = Box.createHorizontalBox();
         JLabel labelForResult = new JLabel("Result =");
         textFieldResult = new JTextField("0", 10);
+        textFieldResult.setMaximumSize(textFieldResult.getPreferredSize());
         hboxResult.add(Box.createHorizontalGlue());
         hboxResult.add(labelForResult);
         hboxResult.add(Box.createHorizontalStrut(10));
@@ -155,6 +156,8 @@ public class MainFrame extends JFrame {
 
 
     public static void main(String[] args) {
-
+        MainFrame frame = new MainFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
