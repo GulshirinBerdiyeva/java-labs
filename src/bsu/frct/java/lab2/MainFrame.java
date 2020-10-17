@@ -87,6 +87,18 @@ public class MainFrame extends JFrame {
         hboxVariables.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
+        Box hboxResult = Box.createHorizontalBox();
+        JLabel labelForResult = new JLabel("Result =");
+        textFieldResult = new JTextField("0", 10);
+        hboxResult.add(Box.createHorizontalGlue());
+        hboxResult.add(labelForResult);
+        hboxResult.add(Box.createHorizontalStrut(10));
+        hboxResult.add(textFieldResult);
+        hboxResult.add(Box.createHorizontalGlue());
+        hboxResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+
+
+
     }
 
 
