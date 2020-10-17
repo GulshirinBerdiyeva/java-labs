@@ -53,6 +53,14 @@ public class MainFrame extends JFrame {
                 (kit.getScreenSize().height - HEIGHT)/2);
 
 
+        hboxFormulaType.add(Box.createHorizontalGlue());
+        addRadioButton("Formula 1", 1);
+        addRadioButton("Formula 2", 2);
+        hboxFormulaType.add(Box.createHorizontalGlue());
+        radioButtons.setSelected(radioButtons.getElements().nextElement().getModel(), true);
+        hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+
 
     }
 
