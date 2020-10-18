@@ -2,10 +2,14 @@ package bsu.frct.java.lab2;
 
 import javafx.scene.control.RadioButton;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static java.lang.Math.*;
 
@@ -20,15 +24,17 @@ public class MainFrame extends JFrame {
     private ButtonGroup radioButtons = new ButtonGroup();
     private Box hboxFormulaType = Box.createHorizontalBox();
     private int formulaId = 1;
+    private BufferedImage image = null;
+    private JLabel labelImage = new JLabel();
 
 
     public Double calculate1(Double x, Double y, Double z){
-        return pow( pow(log(1+x), 2) + cos(PI*pow(z, 3)) , sin(y)) +
+        return pow( log(pow(1+x, 2))+ cos(PI*pow(z, 3)) , sin(y)) +
                 pow( exp(pow(x, 2)) + cos(exp(z)) + sqrt(1/y), 1/x);
     }
     public Double calculate2(Double x, Double y, Double z){
-        return pow( cos(PI*pow(x, 3)) + pow(log(1+y), 2) , 1/4) *
-                ( exp(pow(z, 2)) + sqrt(1/x) + cos(exp(y)));
+        return pow(cos(PI*pow(x, 3)) + log(pow(1+y, 2)), 1/4) *
+                (exp(pow(z, 2)) + sqrt(1/x) + cos(exp(y)));
     }
 
 
@@ -38,6 +44,16 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainFrame.this.formulaId = formulaId;
+                try {
+                    if (formulaId == 1) {
+                        image = ImageIO.read(new File("src/bsu/frct/java/lab2/Formula 1.jpg"));
+                    } else {
+                        image = ImageIO.read(new File("src/bsu/frct/java/lab2/Formula 2.jpg"));
+                    }
+                    labelImage.setIcon(new ImageIcon(image));
+                }   catch (IOException ex){
+                    System.out.println("!!!Image not found!!!");
+                }
             }
         });
         radioButtons.add(button);
@@ -60,6 +76,14 @@ public class MainFrame extends JFrame {
         hboxFormulaType.add(Box.createHorizontalGlue());
         radioButtons.setSelected(radioButtons.getElements().nextElement().getModel(), true);
         hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+
+        Box hboxFormulaImage = Box.createHorizontalBox();
+        hboxFormulaImage.add(Box.createHorizontalGlue());
+        hboxFormulaImage.add(labelImage);
+        hboxFormulaImage.add(Box.createHorizontalGlue());
+        hboxFormulaImage.setBorder(BorderFactory.createLineBorder(Color.RED));
+
 
         Box hboxVariables = Box.createHorizontalBox();
         JLabel labelForX = new JLabel("X =");
@@ -143,6 +167,7 @@ public class MainFrame extends JFrame {
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
+        contentBox.add(hboxFormulaImage);
         contentBox.add(hboxVariables);
         contentBox.add(hboxResult);
         contentBox.add(hboxButtons);
