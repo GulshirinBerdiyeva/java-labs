@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
         Toolkit kit = Toolkit.getDefaultToolkit();
         setLocation( (kit.getScreenSize().width - WIDTH)/2,
-                (kit.getScreenSize().height - HEIGHT)/2);
+                     (kit.getScreenSize().height - HEIGHT)/2);
 
 
         hboxFormulaType.add(Box.createHorizontalGlue());
@@ -212,6 +212,58 @@ public class MainFrame extends JFrame {
         hboxMemoryResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
+        Box hboxMemoryButtons = Box.createHorizontalBox();
+        JButton Mplus = new JButton("M+");
+        Mplus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Double result = Double.parseDouble(textFieldResult.getText()),
+                            mem1 = Double.parseDouble(textFieldMem1.getText()),
+                            mem2 = Double.parseDouble(textFieldMem2.getText()),
+                            mem3 = Double.parseDouble(textFieldMem3.getText());
+                    if (memoryId == 1) {
+                        mem1 += result;
+                        textFieldMem1.setText(mem1.toString());
+                    }
+                    if (memoryId == 2) {
+                        mem2 += result;
+                        textFieldMem2.setText(mem2.toString());
+                    }
+                    if (memoryId == 3) {
+                        mem3 += result;
+                        textFieldMem3.setText(mem3.toString());
+                    }
+                }   catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Wrong number in (Result)",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        JButton MC = new JButton("MC");
+        MC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (memoryId == 1){
+                    textFieldMem1.setText("0");
+                }
+                if (memoryId == 2){
+                    textFieldMem2.setText("0");
+                }
+                if (memoryId == 3){
+                    textFieldMem3.setText("0");
+                }
+            }
+        });
+        hboxMemoryButtons.add(Box.createHorizontalGlue());
+        hboxMemoryButtons.add(Mplus);
+        hboxMemoryButtons.add(Box.createHorizontalStrut(30));
+        hboxMemoryButtons.add(MC);
+        hboxMemoryButtons.add(Box.createHorizontalGlue());
+        hboxMemoryButtons.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
@@ -221,6 +273,7 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxButtons);
         contentBox.add(hboxMemoryType);
         contentBox.add(hboxMemoryResult);
+        contentBox.add(hboxMemoryButtons);
         contentBox.add(Box.createVerticalGlue());
         contentBox.setBorder(BorderFactory.createLineBorder(Color.PINK));
         getContentPane().add(contentBox, BorderLayout.CENTER);
