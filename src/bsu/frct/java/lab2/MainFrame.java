@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
                 hboxMemoryType = Box.createHorizontalBox();
     private int formulaId = 1,
                 memoryId = 1;
-    private BufferedImage image = null;
+    private BufferedImage image;
     private JLabel labelImage = new JLabel();
 
     public Double calculate1(Double x, Double y, Double z){
@@ -88,14 +88,14 @@ public class MainFrame extends JFrame {
         addRadioFormulaButton("Formula 2", 2);
         hboxFormulaType.add(Box.createHorizontalGlue());
         radioFormulaButtons.setSelected(radioFormulaButtons.getElements().nextElement().getModel(), true);
-        hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         Box hboxFormulaImage = Box.createHorizontalBox();
         hboxFormulaImage.add(Box.createHorizontalGlue());
         hboxFormulaImage.add(labelImage);
         hboxFormulaImage.add(Box.createHorizontalGlue());
-        hboxFormulaImage.setBorder(BorderFactory.createLineBorder(Color.RED));
+        hboxFormulaImage.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         Box hboxVariables = Box.createHorizontalBox();
@@ -133,7 +133,7 @@ public class MainFrame extends JFrame {
         hboxResult.add(Box.createHorizontalStrut(10));
         hboxResult.add(textFieldResult);
         hboxResult.add(Box.createHorizontalGlue());
-        hboxResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+        hboxResult.setBorder(BorderFactory.createLineBorder(Color.RED));
 
 
         Box hboxButtons = Box.createHorizontalBox();
@@ -171,10 +171,10 @@ public class MainFrame extends JFrame {
         });
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
-        hboxButtons.add(Box.createHorizontalStrut(30));
+        hboxButtons.add(Box.createHorizontalStrut(50));
         hboxButtons.add(buttonReset);
         hboxButtons.add(Box.createHorizontalGlue());
-        hboxButtons.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        hboxButtons.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         hboxMemoryType.add(Box.createHorizontalGlue());
@@ -183,7 +183,7 @@ public class MainFrame extends JFrame {
         addRadioMemoryButton("Mem3", 3);
         hboxMemoryType.add(Box.createHorizontalGlue());
         radioMemoryButtons.setSelected(radioMemoryButtons.getElements().nextElement().getModel(), true);
-        hboxMemoryType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        hboxMemoryType.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         Box hboxMemoryResult = Box.createHorizontalBox();
@@ -209,7 +209,7 @@ public class MainFrame extends JFrame {
         hboxMemoryResult.add(Box.createHorizontalStrut(10));
         hboxMemoryResult.add(textFieldMem3);
         hboxMemoryResult.add(Box.createHorizontalGlue());
-        hboxMemoryResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+        hboxMemoryResult.setBorder(BorderFactory.createLineBorder(Color.RED));
 
 
         Box hboxMemoryButtons = Box.createHorizontalBox();
@@ -258,10 +258,10 @@ public class MainFrame extends JFrame {
         });
         hboxMemoryButtons.add(Box.createHorizontalGlue());
         hboxMemoryButtons.add(Mplus);
-        hboxMemoryButtons.add(Box.createHorizontalStrut(30));
+        hboxMemoryButtons.add(Box.createHorizontalStrut(50));
         hboxMemoryButtons.add(MC);
         hboxMemoryButtons.add(Box.createHorizontalGlue());
-        hboxMemoryButtons.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        hboxMemoryButtons.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         Box contentBox = Box.createVerticalBox();
@@ -275,11 +275,8 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxMemoryResult);
         contentBox.add(hboxMemoryButtons);
         contentBox.add(Box.createVerticalGlue());
-        contentBox.setBorder(BorderFactory.createLineBorder(Color.PINK));
+        contentBox.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         getContentPane().add(contentBox, BorderLayout.CENTER);
-
-
-
     }
 
 
