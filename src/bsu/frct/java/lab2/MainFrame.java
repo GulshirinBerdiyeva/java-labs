@@ -186,6 +186,32 @@ public class MainFrame extends JFrame {
         hboxMemoryType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
 
+        Box hboxMemoryResult = Box.createHorizontalBox();
+        JLabel labelForMem1 = new JLabel("Mem1 =");
+        textFieldMem1 = new JTextField("0", 10);
+        textFieldMem1.setMaximumSize(textFieldMem1.getPreferredSize());
+        hboxMemoryResult.add(Box.createHorizontalGlue());
+        hboxMemoryResult.add(labelForMem1);
+        hboxMemoryResult.add(Box.createHorizontalStrut(10));
+        hboxMemoryResult.add(textFieldMem1);
+        hboxMemoryResult.add(Box.createHorizontalStrut(100));
+        JLabel labelForMem2 = new JLabel("Mem2 =");
+        textFieldMem2 = new JTextField("0", 10);
+        textFieldMem2.setMaximumSize(textFieldMem2.getPreferredSize());
+        hboxMemoryResult.add(labelForMem2);
+        hboxMemoryResult.add(Box.createHorizontalStrut(10));
+        hboxMemoryResult.add(textFieldMem2);
+        hboxMemoryResult.add(Box.createHorizontalStrut(100));
+        JLabel labelForMem3 = new JLabel("Mem3 =");
+        textFieldMem3 = new JTextField("0", 10);
+        textFieldMem3.setMaximumSize(textFieldMem3.getPreferredSize());
+        hboxMemoryResult.add(labelForMem3);
+        hboxMemoryResult.add(Box.createHorizontalStrut(10));
+        hboxMemoryResult.add(textFieldMem3);
+        hboxMemoryResult.add(Box.createHorizontalGlue());
+        hboxMemoryResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+
+
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
@@ -194,6 +220,7 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxResult);
         contentBox.add(hboxButtons);
         contentBox.add(hboxMemoryType);
+        contentBox.add(hboxMemoryResult);
         contentBox.add(Box.createVerticalGlue());
         contentBox.setBorder(BorderFactory.createLineBorder(Color.PINK));
         getContentPane().add(contentBox, BorderLayout.CENTER);
