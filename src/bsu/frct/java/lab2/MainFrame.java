@@ -89,9 +89,8 @@ public class MainFrame extends JFrame {
        try{
            image = ImageIO.read(new File("src/bsu/frct/java/lab2/Formula 1.jpg"));
            labelImage.setIcon(new ImageIcon(image));
-
        }    catch(IOException ex){
-
+           System.out.println("!!!Image not found!!!");
        }
         hboxFormulaType.add(Box.createHorizontalGlue());
         radioFormulaButtons.setSelected(radioFormulaButtons.getElements().nextElement().getModel(), true);
@@ -197,7 +196,7 @@ public class MainFrame extends JFrame {
         textFieldMem1.setMaximumSize(textFieldMem1.getPreferredSize());
         hboxMemoryResult.add(Box.createHorizontalGlue());
         hboxMemoryResult.add(labelForMem1);
-        hboxMemoryResult.add(Box.createHorizontalStrut(30));
+        hboxMemoryResult.add(Box.createHorizontalStrut(10));
         hboxMemoryResult.add(textFieldMem1);
         hboxMemoryResult.add(Box.createHorizontalStrut(100));
         JLabel labelForMem2 = new JLabel("Mem2 =");
