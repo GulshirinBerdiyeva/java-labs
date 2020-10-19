@@ -74,7 +74,7 @@ public class MainFrame extends JFrame {
         hboxMemoryType.add(button);
     }
 
-    public MainFrame(){
+    public MainFrame() {
         super("Formula calculation...");
 
         setSize(WIDTH, HEIGHT);
@@ -86,6 +86,13 @@ public class MainFrame extends JFrame {
         hboxFormulaType.add(Box.createHorizontalGlue());
         addRadioFormulaButton("Formula 1", 1);
         addRadioFormulaButton("Formula 2", 2);
+       try{
+           image = ImageIO.read(new File("src/bsu/frct/java/lab2/Formula 1.jpg"));
+           labelImage.setIcon(new ImageIcon(image));
+
+       }    catch(IOException ex){
+
+       }
         hboxFormulaType.add(Box.createHorizontalGlue());
         radioFormulaButtons.setSelected(radioFormulaButtons.getElements().nextElement().getModel(), true);
         hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
@@ -108,25 +115,23 @@ public class MainFrame extends JFrame {
         JLabel labelForZ = new JLabel("Z =");
         textFieldZ = new JTextField("0", 10);
         textFieldZ.setMaximumSize(textFieldZ.getPreferredSize());
-        hboxVariables.add(Box.createHorizontalGlue());
         hboxVariables.add(labelForX);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldX);
-        hboxVariables.add(Box.createHorizontalStrut(100));
+        hboxVariables.add(Box.createHorizontalGlue());
         hboxVariables.add(labelForY);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldY);
-        hboxVariables.add(Box.createHorizontalStrut(100));
+        hboxVariables.add(Box.createHorizontalGlue());
         hboxVariables.add(labelForZ);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldZ);
-        hboxVariables.add(Box.createHorizontalGlue());
         hboxVariables.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
 
 
         Box hboxResult = Box.createHorizontalBox();
         JLabel labelForResult = new JLabel("Result =");
-        textFieldResult = new JTextField("0", 10);
+        textFieldResult = new JTextField("0", 50);
         textFieldResult.setMaximumSize(textFieldResult.getPreferredSize());
         hboxResult.add(Box.createHorizontalGlue());
         hboxResult.add(labelForResult);
@@ -188,22 +193,22 @@ public class MainFrame extends JFrame {
 
         Box hboxMemoryResult = Box.createHorizontalBox();
         JLabel labelForMem1 = new JLabel("Mem1 =");
-        textFieldMem1 = new JTextField("0", 10);
+        textFieldMem1 = new JTextField("0", 30);
         textFieldMem1.setMaximumSize(textFieldMem1.getPreferredSize());
         hboxMemoryResult.add(Box.createHorizontalGlue());
         hboxMemoryResult.add(labelForMem1);
-        hboxMemoryResult.add(Box.createHorizontalStrut(10));
+        hboxMemoryResult.add(Box.createHorizontalStrut(30));
         hboxMemoryResult.add(textFieldMem1);
         hboxMemoryResult.add(Box.createHorizontalStrut(100));
         JLabel labelForMem2 = new JLabel("Mem2 =");
-        textFieldMem2 = new JTextField("0", 10);
+        textFieldMem2 = new JTextField("0", 30);
         textFieldMem2.setMaximumSize(textFieldMem2.getPreferredSize());
         hboxMemoryResult.add(labelForMem2);
         hboxMemoryResult.add(Box.createHorizontalStrut(10));
         hboxMemoryResult.add(textFieldMem2);
         hboxMemoryResult.add(Box.createHorizontalStrut(100));
         JLabel labelForMem3 = new JLabel("Mem3 =");
-        textFieldMem3 = new JTextField("0", 10);
+        textFieldMem3 = new JTextField("0", 30);
         textFieldMem3.setMaximumSize(textFieldMem3.getPreferredSize());
         hboxMemoryResult.add(labelForMem3);
         hboxMemoryResult.add(Box.createHorizontalStrut(10));
