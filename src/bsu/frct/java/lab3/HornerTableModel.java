@@ -2,6 +2,8 @@ package bsu.frct.java.lab3;
 
 import javax.swing.table.AbstractTableModel;
 
+import static java.lang.Math.*;
+
 public class HornerTableModel extends AbstractTableModel {
     private Double[] coefficients;
     private Double from,
@@ -40,7 +42,35 @@ public class HornerTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return null;
+        double x = from + step * rowIndex;
+        if (columnIndex == 0){
+            return x;
+        }
+        if (columnIndex == 1){
+            Double result = 0.;
+            for (Double a : coefficients){
+                result = result * x + a;
+            }
+            return result;
+        }
+        if (columnIndex == 2){
+            Double result = 0.;
+            for (Double a : coefficients){
+                result += pow(x, a);
+            }
+            return result;
+        }else{
+            Double result1 = 0.,
+                   result2 = 0.;
+            for (Double a : coefficients){
+                result1 = result1 * x + a;
+            }
+            for (Double a : coefficients){
+                result2 += pow(x, a);
+            }
+            return result1 - result2;
+        }
+
     }
 
     @Override
@@ -59,6 +89,6 @@ public class HornerTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return super.getColumnClass(columnIndex);
+        return Double.class;
     }
 }
