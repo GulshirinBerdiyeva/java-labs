@@ -70,7 +70,6 @@ public class HornerTableModel extends AbstractTableModel {
             }
             return result1 - result2;
         }
-
     }
 
     @Override
