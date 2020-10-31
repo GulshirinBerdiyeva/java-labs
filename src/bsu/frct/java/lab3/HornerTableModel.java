@@ -2,13 +2,13 @@ package bsu.frct.java.lab3;
 
 import javax.swing.table.AbstractTableModel;
 
-public class GornerTableModel extends AbstractTableModel {
+public class HornerTableModel extends AbstractTableModel {
     private Double[] coefficients;
     private Double from,
                    to,
                    step;
 
-    public GornerTableModel(Double from, Double to,
+    public HornerTableModel(Double from, Double to,
                             Double step, Double[] coefficients){
         this.from = from;
         this.to = to;
@@ -30,12 +30,12 @@ public class GornerTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 0;
+        return new Double(Math.ceil((to - from) / step)).intValue() + 1;
     }
 
     @Override
     public int getColumnCount() {
-        return 0;
+        return 4;
     }
 
     @Override
@@ -45,7 +45,16 @@ public class GornerTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        return super.getColumnName(column);
+        switch (column){
+            case 0:
+                return "X value";
+            case 1:
+                return "Horner polynomial value";
+            case 2:
+                return "Power polynomial value";
+            default:
+                return "Difference between 2 polynomial values";
+        }
     }
 
     @Override
