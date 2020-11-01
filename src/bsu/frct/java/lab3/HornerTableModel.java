@@ -1,7 +1,6 @@
 package bsu.frct.java.lab3;
 
 import javax.swing.table.AbstractTableModel;
-
 import static java.lang.Math.*;
 
 public class HornerTableModel extends AbstractTableModel {
