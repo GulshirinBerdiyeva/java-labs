@@ -3,6 +3,7 @@ package bsu.frct.java.lab3;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -115,7 +116,31 @@ public class MainFrame extends JFrame {
                 new Double(hBoxRange.getMinimumSize().getHeight()).intValue() * 2));
         getContentPane().add(hBoxRange, BorderLayout.NORTH);
 
-
+        JButton buttonCalc = new JButton("Calculate");
+        buttonCalc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Double from = Double.parseDouble(textFieldFrom.getText()),
+                           to = Double.parseDouble(textFieldTo.getText()),
+                           step = Double.parseDouble(textFieldStep.getText());
+                    data = new HornerTableModel(from, to, step, MainFrame.this.coefficients);
+                    JTable table = new JTable(data);
+                    table.setDefaultRenderer(Double.class, renderer);
+                    table.setRowHeight(30);
+                    hBoxResult.removeAll();
+                    hBoxResult.add(new JScrollPane(table));
+                    getContentPane().validate();
+                    saveToTextMenuItem.setEnabled(true);
+                    saveToGraphicsMenuItem.setEnabled(true);
+                    searchValueMenuItem.setEnabled(true);
+                } catch (NumberFormatException numberFormatException) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                                                  "Floating point format error", "Wrong number format",
+                                                  JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
     }
 
     private void saveToGraphicsFile(File selectedFile) {
