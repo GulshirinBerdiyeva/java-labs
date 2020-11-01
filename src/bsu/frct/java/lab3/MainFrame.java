@@ -141,6 +141,22 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+
+        JButton buttonReset = new JButton("Reset");
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textFieldFrom.setText("0.0");
+                textFieldTo.setText("1.0");
+                textFieldStep.setText("0.1");
+                hBoxResult.removeAll();
+                hBoxResult.add(new JPanel());
+                saveToTextMenuItem.setEnabled(false);
+                saveToGraphicsMenuItem.setEnabled(false);
+                searchValueMenuItem.setEnabled(false);
+                getContentPane().validate();
+            }
+        });
     }
 
     private void saveToGraphicsFile(File selectedFile) {
