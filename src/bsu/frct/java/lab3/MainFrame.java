@@ -15,7 +15,8 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser = null;
     private JMenuItem saveToTextMenuItem,
                       saveToGraphicsMenuItem,
-                      searchValueMenuItem;
+                      searchValueMenuItem,
+                      aboutTheProgramMenuItem;
     private JTextField textFieldFrom,
                        textFieldTo,
                        textFieldStep;
@@ -23,6 +24,7 @@ public class MainFrame extends JFrame {
     private HornerTableCellRenderer renderer = new HornerTableCellRenderer();
     private HornerTableModel data;
     private DecimalFormat formatter = (DecimalFormat)NumberFormat.getInstance();
+    private ImageIcon icon = null;
 
     public MainFrame(Double[] coefficients){
         super("Tabulating a polynomial on a segment in 2 ways");
@@ -40,6 +42,8 @@ public class MainFrame extends JFrame {
         menuBar.add(fileMenu);
         JMenu tableMenu = new JMenu("Table");
         menuBar.add(tableMenu);
+        JMenu referenceMenu = new JMenu("Reference");
+        menuBar.add(referenceMenu);
 
         Action saveToTextAction = new AbstractAction("Save to text file") {
             @Override
@@ -85,6 +89,21 @@ public class MainFrame extends JFrame {
         };
         searchValueMenuItem = tableMenu.add(searchValueAction);
         searchValueMenuItem.setEnabled(false);
+
+        Action aboutTheProgramAction = new AbstractAction("About the program") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                icon = new ImageIcon("src/bsu/frct/java/lab3/photo.jpg");
+                Image image = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(image);
+
+                JOptionPane.showMessageDialog(MainFrame.this,
+                        "Berdiyeva Gulshirin\nfrom group #10", "About the student",
+                        JOptionPane.INFORMATION_MESSAGE, icon);
+            }
+        };
+        aboutTheProgramMenuItem = referenceMenu.add(aboutTheProgramAction);
+        aboutTheProgramMenuItem.setEnabled(true);
 
         JLabel labelForFrom = new JLabel("X varies from:");
         textFieldFrom = new JTextField("0.0", 10);
