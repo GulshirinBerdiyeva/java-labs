@@ -31,7 +31,7 @@ public class HornerTableCellRenderer implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String formattedDouble = formatter.format(value);
         label.setText(formattedDouble);
-        if ((column == 1 || column == 2 || column == 3) && needle != null && needle.equals(formattedDouble)){
+        if (needle != null && needle.equals(formattedDouble)){
             panel.setBackground(Color.ORANGE);
         }else{
             panel.setBackground(Color.WHITE);

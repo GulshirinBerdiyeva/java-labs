@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 public class MainFrame extends JFrame {
@@ -26,7 +25,7 @@ public class MainFrame extends JFrame {
     private DecimalFormat formatter = (DecimalFormat)NumberFormat.getInstance();
 
     public MainFrame(Double[] coefficients){
-        super("Tabulating a polynomial on a segment in 2 ways..");
+        super("Tabulating a polynomial on a segment in 2 ways");
 
         this.coefficients = coefficients;
 
@@ -47,7 +46,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(fileChooser == null){
                     fileChooser = new JFileChooser();
-                    fileChooser.setCurrentDirectory(new File("File_1.txt"));
+                    fileChooser.setCurrentDirectory(new File(""));
                 }
                 if (fileChooser.showSaveDialog(MainFrame.this) ==
                         JFileChooser.APPROVE_OPTION){
@@ -63,7 +62,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (fileChooser == null){
                     fileChooser = new JFileChooser();
-                    fileChooser.setCurrentDirectory(new File("File_2.bin"));
+                    fileChooser.setCurrentDirectory(new File(""));
                 }
                 if (fileChooser.showSaveDialog(MainFrame.this) ==
                     JFileChooser.APPROVE_OPTION){
@@ -74,7 +73,7 @@ public class MainFrame extends JFrame {
         saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
         saveToGraphicsMenuItem.setEnabled(false);
 
-        Action searchValueAction = new AbstractAction("Find the value of a polunomial") {
+        Action searchValueAction = new AbstractAction("Find the value") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String value = JOptionPane.showInputDialog(MainFrame.this,
@@ -99,21 +98,23 @@ public class MainFrame extends JFrame {
 
         Box hBoxRange = Box.createHorizontalBox();
         hBoxRange.setBorder(BorderFactory.createBevelBorder(1));
+        hBoxRange.add(Box.createHorizontalStrut(10));
         hBoxRange.add(labelForFrom);
         hBoxRange.add(Box.createHorizontalStrut(10));
         hBoxRange.add(textFieldFrom);
-        hBoxRange.add(Box.createHorizontalStrut(20));
+        hBoxRange.add(Box.createHorizontalGlue());
         hBoxRange.add(labelForTo);
         hBoxRange.add(Box.createHorizontalStrut(10));
         hBoxRange.add(textFieldTo);
-        hBoxRange.add(Box.createHorizontalStrut(20));
+        hBoxRange.add(Box.createHorizontalGlue());
         hBoxRange.add(labelForStep);
         hBoxRange.add(Box.createHorizontalStrut(10));
         hBoxRange.add(textFieldStep);
-        hBoxRange.add(Box.createHorizontalGlue());
+        hBoxRange.add(Box.createHorizontalStrut(10));
         hBoxRange.setPreferredSize(new Dimension(
                 new Double(hBoxRange.getMaximumSize().getWidth()).intValue(),
                 new Double(hBoxRange.getMinimumSize().getHeight()).intValue() * 2));
+        hBoxRange.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         getContentPane().add(hBoxRange, BorderLayout.NORTH);
 
         JButton buttonCalc = new JButton("Calculate");
@@ -134,7 +135,7 @@ public class MainFrame extends JFrame {
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
-                } catch (NumberFormatException numberFormatException) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(MainFrame.this,
                                                   "Floating point format error", "Wrong number format",
                                                   JOptionPane.WARNING_MESSAGE);
@@ -162,15 +163,17 @@ public class MainFrame extends JFrame {
         hBoxButtons.setBorder(BorderFactory.createBevelBorder(1));
         hBoxButtons.add(Box.createHorizontalGlue());
         hBoxButtons.add(buttonCalc);
-        hBoxButtons.add(Box.createHorizontalStrut(30));
+        hBoxButtons.add(Box.createHorizontalStrut(50));
         hBoxButtons.add(buttonReset);
         hBoxButtons.add(Box.createHorizontalGlue());
         hBoxButtons.setPreferredSize(new Dimension(
                 new Double(hBoxButtons.getMaximumSize().getWidth()).intValue(),
                 new Double(hBoxButtons.getMinimumSize().getHeight()).intValue() * 2));
+        hBoxButtons.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         getContentPane().add(hBoxButtons, BorderLayout.SOUTH);
         hBoxResult = Box.createHorizontalBox();
         hBoxResult.add(new JPanel());
+        hBoxResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         getContentPane().add(hBoxResult, BorderLayout.CENTER);
     }
 
@@ -179,15 +182,14 @@ public class MainFrame extends JFrame {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
             for (int i = 0; i < data.getRowCount(); i++){
                 for (int j = 0; j < data.getColumnCount(); j++) {
-                    out.writeChars(formatter.format(data.getValueAt(i,j)));
+                    out.writeDouble((Double)data.getValueAt(i, j));
                 }
-                out.close();
             }
+            out.close();
         } catch (IOException e) {
-            System.out.println("'File_2.bin' not found..");
+            System.out.println("File couldn't be created");
         }
     }
-
     public void saveToTextFile(File selectedFile) {
         try {
             FileWriter writer = new FileWriter(selectedFile);
@@ -196,14 +198,14 @@ public class MainFrame extends JFrame {
                 writer.append("\t|\t");
             }
 
-            writer.append("\n---------   -------------------------   --------------" +
-                          "-----------   -----------------------------------------\n");
+            writer.append("\n___________________________________________________________" +
+                          "______________________________________________________________\n");
 
             for (int i = 0; i < data.getRowCount(); i++){
                 for (int j = 0; j < data.getColumnCount(); j++){
                     writer.write(String.valueOf(formatter.format(data.getValueAt(i,j))));
                     int a = formatter.format(data.getValueAt(i,j)).toString().length();
-                    for (int l = 1; l < (25 - a); l++) {
+                    for (int l = 1; l < (30 - a); l++) {
                         writer.append(" ");
                     }
                 }
@@ -211,7 +213,7 @@ public class MainFrame extends JFrame {
             }
             writer.flush();
         }catch (IOException e){
-            System.out.println("'File_1.txt' not found..");
+            System.out.println("File couldn't be created");
         }
     }
 
