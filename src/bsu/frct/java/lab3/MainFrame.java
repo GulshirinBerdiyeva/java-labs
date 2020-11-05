@@ -1,5 +1,6 @@
 package bsu.frct.java.lab3;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser = null;
     private JMenuItem saveToTextMenuItem,
                       saveToGraphicsMenuItem,
+                      saveToCSVMenuItem,
                       searchValueMenuItem,
                       aboutTheProgramMenuItem;
     private JTextField textFieldFrom,
@@ -50,7 +52,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(fileChooser == null){
                     fileChooser = new JFileChooser();
-                    fileChooser.setCurrentDirectory(new File(""));
+                    fileChooser.setCurrentDirectory(new File("F"));
                 }
                 if (fileChooser.showSaveDialog(MainFrame.this) ==
                         JFileChooser.APPROVE_OPTION){
@@ -66,7 +68,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (fileChooser == null){
                     fileChooser = new JFileChooser();
-                    fileChooser.setCurrentDirectory(new File(""));
+                    fileChooser.setCurrentDirectory(new File("F"));
                 }
                 if (fileChooser.showSaveDialog(MainFrame.this) ==
                     JFileChooser.APPROVE_OPTION){
@@ -76,6 +78,22 @@ public class MainFrame extends JFrame {
         };
         saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
         saveToGraphicsMenuItem.setEnabled(false);
+
+        Action saveToCSVAction = new AbstractAction("Save to CSV file") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser == null){
+                    fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File("F"));
+                }
+                if (fileChooser.showSaveDialog(MainFrame.this) ==
+                        JFileChooser.APPROVE_OPTION){
+                    saveToCSVFile(fileChooser.getSelectedFile());
+                }
+            }
+        };
+        saveToCSVMenuItem = fileMenu.add(saveToCSVAction);
+        saveToCSVMenuItem.setEnabled(false);
 
         Action searchValueAction = new AbstractAction("Find the value") {
             @Override
@@ -93,13 +111,17 @@ public class MainFrame extends JFrame {
         Action aboutTheProgramAction = new AbstractAction("About the program") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                icon = new ImageIcon("src/bsu/frct/java/lab3/photo.jpg");
-                Image image = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
-                icon = new ImageIcon(image);
+                try {
+                    Image image = ImageIO.read(new File("src/bsu/frct/java/lab3/photo.jpg"));
+                    image = image.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                    icon = new ImageIcon(image);
 
-                JOptionPane.showMessageDialog(MainFrame.this,
-                        "Berdiyeva Gulshirin\nfrom group #10", "About the student",
-                        JOptionPane.INFORMATION_MESSAGE, icon);
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Berdiyeva Gulshirin\nfrom group #10", "About the student",
+                            JOptionPane.INFORMATION_MESSAGE, icon);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         };
         aboutTheProgramMenuItem = referenceMenu.add(aboutTheProgramAction);
@@ -153,6 +175,7 @@ public class MainFrame extends JFrame {
                     getContentPane().validate();
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
+                    saveToCSVMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(MainFrame.this,
@@ -173,6 +196,7 @@ public class MainFrame extends JFrame {
                 hBoxResult.add(new JPanel());
                 saveToTextMenuItem.setEnabled(false);
                 saveToGraphicsMenuItem.setEnabled(false);
+                saveToCSVMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
                 getContentPane().validate();
             }
@@ -196,6 +220,7 @@ public class MainFrame extends JFrame {
         getContentPane().add(hBoxResult, BorderLayout.CENTER);
     }
 
+
     private void saveToGraphicsFile(File selectedFile) {
         try{
             DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
@@ -209,15 +234,15 @@ public class MainFrame extends JFrame {
             System.out.println("File couldn't be created");
         }
     }
-    public void saveToTextFile(File selectedFile) {
+    private void saveToTextFile(File selectedFile) {
         try {
             FileWriter writer = new FileWriter(selectedFile);
             for (int i = 0; i < data.getColumnCount(); i++){
                 writer.write(data.getColumnName(i));
-                writer.append("\t|\t");
+                writer.write("\t|\t");
             }
 
-            writer.append("\n___________________________________________________________" +
+            writer.write("\n___________________________________________________________" +
                           "______________________________________________________________\n");
 
             for (int i = 0; i < data.getRowCount(); i++){
@@ -225,16 +250,33 @@ public class MainFrame extends JFrame {
                     writer.write(String.valueOf(formatter.format(data.getValueAt(i,j))));
                     int a = formatter.format(data.getValueAt(i,j)).toString().length();
                     for (int l = 1; l < (30 - a); l++) {
-                        writer.append(" ");
+                        writer.write(" ");
                     }
                 }
-                writer.append("\n");
+                writer.write("\n");
             }
             writer.flush();
         }catch (IOException e){
             System.out.println("File couldn't be created");
         }
     }
+    private void saveToCSVFile(File selectedFile) {
+        try {
+            FileWriter writer = new FileWriter(selectedFile);
+            for (int i = 0; i < data.getRowCount(); i++){
+                for (int j = 0; j < data.getColumnCount(); j++) {
+                    writer.write(String.valueOf(formatter.format(data.getValueAt(i,j))));
+                    if(j != 3)
+                        writer.write(", ");
+                }
+                writer.write("\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            System.out.println("File couldn't be created");
+        }
+    }
+
 
     public static void main(String[] args) {
         if(args.length == 0){

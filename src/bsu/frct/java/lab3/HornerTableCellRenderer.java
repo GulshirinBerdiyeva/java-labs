@@ -28,7 +28,9 @@ public class HornerTableCellRenderer implements TableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
         String formattedDouble = formatter.format(value);
         label.setText(formattedDouble);
         if (needle != null && needle.equals(formattedDouble)){
