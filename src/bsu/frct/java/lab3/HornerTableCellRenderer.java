@@ -32,7 +32,21 @@ public class HornerTableCellRenderer implements TableCellRenderer {
                                                    boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
         String formattedDouble = formatter.format(value);
-        label.setText(formattedDouble);
+        if (Double.parseDouble(formattedDouble) < 0.){
+            label.setText(formattedDouble);
+            panel.add(label);
+            panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        }
+        if (Double.parseDouble(formattedDouble) == 0.){
+            label.setText(formattedDouble);
+            panel.add(label);
+            panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        }
+        if (Double.parseDouble(formattedDouble) > 0.){
+            label.setText(formattedDouble);
+            panel.add(label);
+            panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        }
         if (needle != null && needle.equals(formattedDouble)){
             panel.setBackground(Color.ORANGE);
         }else{

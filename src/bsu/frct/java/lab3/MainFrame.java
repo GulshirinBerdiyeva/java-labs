@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000,
@@ -25,7 +24,7 @@ public class MainFrame extends JFrame {
     private Box hBoxResult;
     private HornerTableCellRenderer renderer = new HornerTableCellRenderer();
     private HornerTableModel data;
-    private DecimalFormat formatter = (DecimalFormat)NumberFormat.getInstance();
+    private DecimalFormat formatter = new DecimalFormat("###.#####");
     private ImageIcon icon = null;
 
     public MainFrame(Double[] coefficients){
@@ -131,10 +130,10 @@ public class MainFrame extends JFrame {
         textFieldFrom = new JTextField("0.0", 10);
         textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForTo = new JLabel("to:");
-        textFieldTo = new JTextField("1.0", 10);
+        textFieldTo = new JTextField("5.0", 10);
         textFieldTo.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForStep = new JLabel("with step:");
-        textFieldStep = new JTextField("0.1", 10);
+        textFieldStep = new JTextField("0.5", 10);
         textFieldStep.setMaximumSize(textFieldFrom.getPreferredSize());
 
         Box hBoxRange = Box.createHorizontalBox();
@@ -190,8 +189,8 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textFieldFrom.setText("0.0");
-                textFieldTo.setText("1.0");
-                textFieldStep.setText("0.1");
+                textFieldTo.setText("5.0");
+                textFieldStep.setText("0.5");
                 hBoxResult.removeAll();
                 hBoxResult.add(new JPanel());
                 saveToTextMenuItem.setEnabled(false);
