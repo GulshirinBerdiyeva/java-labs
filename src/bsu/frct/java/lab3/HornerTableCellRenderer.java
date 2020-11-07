@@ -12,6 +12,7 @@ public class HornerTableCellRenderer implements TableCellRenderer {
     private JLabel label = new JLabel();
     private JPanel panel = new JPanel();
     private DecimalFormat formatter = (DecimalFormat)NumberFormat.getInstance();
+    private boolean whichSearch = false;
 
     public HornerTableCellRenderer(){
         panel.add(label);
@@ -25,6 +26,9 @@ public class HornerTableCellRenderer implements TableCellRenderer {
 
     public void setNeedle(String needle) {
         this.needle = needle;
+    }
+    public void setWhichSearch(boolean whichSearch) {
+        this.whichSearch = whichSearch;
     }
 
     @Override
@@ -47,10 +51,25 @@ public class HornerTableCellRenderer implements TableCellRenderer {
             panel.add(label);
             panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         }
-        if (needle != null && needle.equals(formattedDouble)){
-            panel.setBackground(Color.ORANGE);
-        }else{
-            panel.setBackground(Color.WHITE);
+
+        if (!this.whichSearch) {
+            if (needle != null && needle.equals(formattedDouble))
+                panel.setBackground(Color.ORANGE);
+            else
+                panel.setBackground(Color.WHITE);
+        }
+
+        if (this.whichSearch){
+            if (needle!= null){
+                Double dPlus = Double.parseDouble(needle) + 0.1;
+                Double dMinus = Double.parseDouble(needle) - 0.1;
+                String plus = formatter.format(dPlus);
+                String minus = formatter.format(dMinus);
+                if (plus.equals(formattedDouble) || minus.equals(formattedDouble))
+                    panel.setBackground(Color.RED);
+                else
+                    panel.setBackground(Color.WHITE);
+            }
         }
         return panel;
     }

@@ -1,5 +1,7 @@
 package bsu.frct.java.lab3;
 
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,7 @@ public class MainFrame extends JFrame {
                       saveToGraphicsMenuItem,
                       saveToCSVMenuItem,
                       searchValueMenuItem,
+                      searchCloseValueMenuItem,
                       aboutTheProgramMenuItem;
     private JTextField textFieldFrom,
                        textFieldTo,
@@ -97,15 +100,44 @@ public class MainFrame extends JFrame {
         Action searchValueAction = new AbstractAction("Find the value") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String value = JOptionPane.showInputDialog(MainFrame.this,
-                        "Enter a value to search", "Value search",
-                        JOptionPane.QUESTION_MESSAGE);
-                renderer.setNeedle(value);
-                getContentPane().repaint();
+                                   String value = JOptionPane.showInputDialog(MainFrame.this,
+                            "Enter a value to search", "Value search",
+                            JOptionPane.QUESTION_MESSAGE);
+                try {
+                    renderer.setWhichSearch(false);
+                    Double num = Double.parseDouble(value);
+                    renderer.setNeedle(value);
+                    getContentPane().repaint();
+                } catch (NumberFormatException | NullPointerException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Wrong number format",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         };
         searchValueMenuItem = tableMenu.add(searchValueAction);
         searchValueMenuItem.setEnabled(false);
+
+        Action searchCloseValueAction = new AbstractAction("Find close to simple") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String value = JOptionPane.showInputDialog(MainFrame.this,
+                        "Enter a simple value to search", "Search for close value",
+                        JOptionPane.QUESTION_MESSAGE);
+                try {
+                    renderer.setWhichSearch(true);
+                    Double num = Double.parseDouble(value);
+                    renderer.setNeedle(value);
+                    getContentPane().repaint();
+                } catch (NumberFormatException | NullPointerException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Wrong number format",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        };
+        searchCloseValueMenuItem = tableMenu.add(searchCloseValueAction);
+        searchCloseValueMenuItem.setEnabled(false);
 
         Action aboutTheProgramAction = new AbstractAction("About the program") {
             @Override
@@ -130,10 +162,10 @@ public class MainFrame extends JFrame {
         textFieldFrom = new JTextField("0.0", 10);
         textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForTo = new JLabel("to:");
-        textFieldTo = new JTextField("5.0", 10);
+        textFieldTo = new JTextField("4.0", 10);
         textFieldTo.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForStep = new JLabel("with step:");
-        textFieldStep = new JTextField("0.5", 10);
+        textFieldStep = new JTextField("0.1", 10);
         textFieldStep.setMaximumSize(textFieldFrom.getPreferredSize());
 
         Box hBoxRange = Box.createHorizontalBox();
@@ -170,12 +202,14 @@ public class MainFrame extends JFrame {
                     table.setDefaultRenderer(Double.class, renderer);
                     table.setRowHeight(30);
                     hBoxResult.removeAll();
+                    renderer.setNeedle(null);
                     hBoxResult.add(new JScrollPane(table));
                     getContentPane().validate();
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     saveToCSVMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
+                    searchCloseValueMenuItem.setEnabled(true);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(MainFrame.this,
                                                   "Floating point format error", "Wrong number format",
@@ -189,14 +223,16 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textFieldFrom.setText("0.0");
-                textFieldTo.setText("5.0");
-                textFieldStep.setText("0.5");
+                textFieldTo.setText("4.0");
+                textFieldStep.setText("0.1");
                 hBoxResult.removeAll();
                 hBoxResult.add(new JPanel());
                 saveToTextMenuItem.setEnabled(false);
                 saveToGraphicsMenuItem.setEnabled(false);
                 saveToCSVMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
+                searchCloseValueMenuItem.setEnabled(false);
+                renderer.setNeedle(null);
                 getContentPane().validate();
             }
         });
