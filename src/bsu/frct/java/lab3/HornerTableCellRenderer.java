@@ -72,5 +72,6 @@ public class HornerTableCellRenderer implements TableCellRenderer {
             }
         }
         return panel;
+
     }
 }
