@@ -1,7 +1,5 @@
 package bsu.frct.java.lab3;
 
-import jdk.nashorn.internal.scripts.JO;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -100,7 +98,7 @@ public class MainFrame extends JFrame {
         Action searchValueAction = new AbstractAction("Find the value") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                                   String value = JOptionPane.showInputDialog(MainFrame.this,
+                String value = JOptionPane.showInputDialog(MainFrame.this,
                             "Enter a value to search", "Value search",
                             JOptionPane.QUESTION_MESSAGE);
                 try {
