@@ -27,9 +27,10 @@ public class GraphicsDisplay extends JPanel {
                 BasicStroke.CAP_ROUND, 10.0f, null, 0.0f);
         markerStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
-
     }
 
-
-
+    public void showGraphics(Double[][] graphicsData){
+        this.graphicsData = graphicsData;
+        repaint();
+    }
 }
