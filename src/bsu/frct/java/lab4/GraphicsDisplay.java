@@ -2,6 +2,7 @@ package bsu.frct.java.lab4;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
 public class GraphicsDisplay extends JPanel {
@@ -56,6 +57,21 @@ public class GraphicsDisplay extends JPanel {
         Point2D.Double dest = new Point2D.Double();
         dest.setLocation(src.getX() + deltaX, src.getY() + deltaY);
         return dest;
+    }
+
+    protected void paintGraphics(Graphics2D canvas){
+        canvas.setStroke(graphicsStroke);
+        canvas.setColor(Color.ORANGE);
+        GeneralPath graphics = new GeneralPath();
+        for (int i = 0; i < graphicsData.length; i++){
+            Point2D point = xyToPoint(graphicsData[i][0],
+                                      graphicsData[i][1]);
+            if (i > 0)
+                graphics.lineTo(point.getX(), point.getY());
+            else
+                graphics.moveTo(point.getX(), point.getY());
+        }
+        canvas.draw(graphics);
     }
 
 
