@@ -61,7 +61,7 @@ public class GraphicsDisplay extends JPanel {
 
     protected void paintGraphics(Graphics2D canvas){
         canvas.setStroke(graphicsStroke);
-        canvas.setColor(Color.ORANGE);
+        canvas.setColor(Color.RED);
 
         GeneralPath graphics = new GeneralPath();
         for (int i = 0; i < graphicsData.length; i++){
@@ -124,13 +124,13 @@ public class GraphicsDisplay extends JPanel {
 
     protected void paintMarkers(Graphics2D canvas){
         canvas.setStroke(markerStroke);
-        canvas.setColor(Color.ORANGE);
-        canvas.setPaint(Color.ORANGE);
+        canvas.setColor(Color.RED);
+        canvas.setPaint(Color.RED);
 
         for (Double[] point : graphicsData){
             Ellipse2D.Double marker = new Ellipse2D.Double();
             Point2D.Double center = xyToPoint(point[0], point[1]);
-            Point2D.Double corner = shiftPoint(center, 3, 3);
+            Point2D.Double corner = shiftPoint(center, 5, 5);
             marker.setFrameFromCenter(center, corner);
             canvas.draw(marker);
             canvas.fill(marker);
