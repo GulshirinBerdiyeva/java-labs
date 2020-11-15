@@ -64,7 +64,7 @@ public class MainFrame extends JFrame {
         };
         showMarkersMenuItem = new JCheckBoxMenuItem(showMarkersAction);
         graphicsMenu.add(showMarkersMenuItem);
-        showMarkersMenuItem.setSelected(false);
+        showMarkersMenuItem.setSelected(true);
         graphicsMenu.addMenuListener(new GraphicsMenuListener());
 
         getContentPane().add(display, BorderLayout.CENTER);
@@ -102,7 +102,7 @@ public class MainFrame extends JFrame {
             return;
         }
     }
-
+    
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
