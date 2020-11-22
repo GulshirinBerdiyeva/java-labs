@@ -15,7 +15,9 @@ public class MainFrame extends JFrame {
     private GraphicsDisplay display = new GraphicsDisplay();
     private JCheckBoxMenuItem showAxisMenuItem,
                               showMarkersMenuItem,
+                              showGridsMenuItem,
                               showRotateMenuItem;
+
 
     public MainFrame(){
         super("Plotting function graphs based on prepared files");
@@ -66,6 +68,16 @@ public class MainFrame extends JFrame {
         showMarkersMenuItem = new JCheckBoxMenuItem(showMarkersAction);
         graphicsMenu.add(showMarkersMenuItem);
         showMarkersMenuItem.setSelected(true);
+
+        Action showGridsAction = new AbstractAction("Show grid") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                display.setShowGrid(showGridsMenuItem.isSelected());
+            }
+        };
+        showGridsMenuItem = new JCheckBoxMenuItem(showGridsAction);
+        graphicsMenu.add(showGridsMenuItem);
+        showGridsMenuItem.setSelected(true);
 
         Action showRotateAction = new AbstractAction("Rotate 90 degree to the left") {
             @Override
@@ -125,6 +137,7 @@ public class MainFrame extends JFrame {
         public void menuSelected(MenuEvent e) {
             showAxisMenuItem.setEnabled(fileLoaded);
             showMarkersMenuItem.setEnabled(fileLoaded);
+            showGridsMenuItem.setEnabled(fileLoaded);
             showRotateMenuItem.setEnabled(fileLoaded);
         }
 

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.*;
 
+
 public class GraphicsDisplay extends JPanel {
     private Double[][] graphicsData;
     private double minX,
@@ -14,25 +15,37 @@ public class GraphicsDisplay extends JPanel {
                    scale;
     private boolean showAxis = true,
                     showMarkers = true,
+                    showGrid = true,
                     showRotate = false;
-    private BasicStroke axisStroke,
-                        graphicsStroke,
-                        markerStroke;
-    private Font axisFont;
+    private BasicStroke graphicsStroke,
+                        axisStroke,
+                        markerStroke,
+                        gridStroke;
+    private Font axisFont,
+                 divisionsFont;
 
     public GraphicsDisplay(){
         setBackground(Color.PINK);
 
         graphicsStroke = new BasicStroke(4.0f, BasicStroke.CAP_ROUND,
-                BasicStroke.JOIN_ROUND, 10.0f, new float[]{20, 5, 5, 5, 10, 5, 5, 5}, 0.0f);
+                                         BasicStroke.JOIN_ROUND, 10.0f,
+                                         new float[]{20, 5, 5, 5, 10, 5, 5, 5},
+                                        0.0f);
 
         axisStroke = new BasicStroke(4.0f, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+                                     BasicStroke.JOIN_MITER, 10.0f,
+                                    null, 0.0f);
 
         markerStroke = new BasicStroke(3.0f, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+                                       BasicStroke.JOIN_MITER, 10.0f,
+                                       null, 0.0f);
+
+        gridStroke = new BasicStroke(1.f, BasicStroke.CAP_BUTT,
+                                    BasicStroke.JOIN_MITER, 10.0f,
+                                    null, 0.0f);
 
         axisFont = new Font("Serif", Font.BOLD, 36);
+        divisionsFont = new Font("Serif", 0, 15);
     }
 
     public void showGraphics(Double[][] graphicsData){
@@ -47,6 +60,11 @@ public class GraphicsDisplay extends JPanel {
 
     public void setShowMarkers(boolean showMarkers){
         this.showMarkers = showMarkers;
+        repaint();
+    }
+
+    public void setShowGrid(boolean showGrid){
+        this.showGrid = showGrid;
         repaint();
     }
 
@@ -90,7 +108,7 @@ public class GraphicsDisplay extends JPanel {
         canvas.setFont(axisFont);
 
         FontRenderContext context = canvas.getFontRenderContext();
-        if (minX <= 0.0 && maxX >= 0.0) {
+        if (minY <= 0.0 && maxY>= 0.0) {
             canvas.draw(new Line2D.Double(xyToPoint(0, maxY),
                                           xyToPoint(0, minY)));
             GeneralPath arrow = new GeneralPath();
@@ -106,11 +124,11 @@ public class GraphicsDisplay extends JPanel {
             Rectangle2D bounds = axisFont.getStringBounds("Y", context);
             Point2D.Double labelPos = xyToPoint(0, maxY);
             canvas.drawString("Y",
-                              (float)labelPos.getX() + 10,
+                              (float)(labelPos.getX() + bounds.getHeight() + 10),
                                  (float)(labelPos.getY() - bounds.getY()));
         }
 
-        if (minY <= 0.0 && maxY >= 0.0){
+        if (minX <= 0.0 && maxX >= 0.0){
             canvas.draw(new Line2D.Double(xyToPoint(minX, 0),
                                           xyToPoint(maxX, 0)));
             GeneralPath arrow = new GeneralPath();
@@ -157,6 +175,64 @@ public class GraphicsDisplay extends JPanel {
                                           shiftPoint(center, -5, 10)));
             canvas.draw(new Line2D.Double(shiftPoint(center, 5, -10),
                                           shiftPoint(center, -5, -10)));
+        }
+    }
+
+    protected void paintGrids(Graphics2D canvas){
+        canvas.setStroke(gridStroke);
+
+        double from = minX,
+               step = (maxX - minX) / 20;
+        while (from < maxX){
+            canvas.draw(new Line2D.Double(xyToPoint(from, maxY),
+                    xyToPoint(from, minY)));
+            from += step;
+        }
+
+        from = minY;
+        step = (maxY - minY) / 20;
+        while (from < maxY){
+            canvas.draw(new Line2D.Double(xyToPoint(minX, from),
+                    xyToPoint(maxX, from)));
+            from += step;
+        }
+    }
+
+    protected void paintDevisions(Graphics2D canvas){
+        canvas.setColor(Color.BLACK);
+        canvas.setFont(divisionsFont);
+
+        double x,
+               y;
+        if (minX <= 0.0 && maxX >= 0.0)
+            x =0;
+        else
+            x = minX;
+        if (minY <= 0.0 && maxY >= 0.0)
+            y = 0;
+        else
+            y = minY;
+
+        double from = minX,
+               step = (maxX - minX) / 20;
+        while (from < maxX){
+            Point2D.Double point = xyToPoint(from, y);
+            String num = String.valueOf(Math.ceil(from));
+            canvas.drawString(num,
+                              (float)(point.getX() + 10),
+                              (float) (point.getY() - 10));
+            from += step;
+        }
+
+        from = minY;
+        step = (maxY - minY) / 20;
+        while (from < maxY){
+            Point2D.Double point = xyToPoint(x, from);
+            String num = String.valueOf(Math.ceil(from));
+            canvas.drawString(num,
+                    (float)(point.getX() + 10),
+                    (float) (point.getY() - 10));
+            from += step;
         }
     }
 
@@ -209,20 +285,24 @@ public class GraphicsDisplay extends JPanel {
         Graphics2D canvas = (Graphics2D)g;
         Stroke oldStroke = canvas.getStroke();
         Color oldColor = canvas.getColor();
-        Paint oldPaint = canvas.getPaint();
         Font oldFont = canvas.getFont();
+        Paint oldPaint = canvas.getPaint();
 
         if(showRotate)
             rotate(canvas);
-        paintGraphics(canvas);
-        if (showAxis)
+        if (showGrid)
+            paintGrids(canvas);
+        if (showAxis) {
             paintAxis(canvas);
+            paintDevisions(canvas);
+        }
+        paintGraphics(canvas);
         if (showMarkers)
             paintMarkers(canvas);
 
-        canvas.setStroke(oldStroke);
-        canvas.setColor(oldColor);
-        canvas.setPaint(oldPaint);
         canvas.setFont(oldFont);
+        canvas.setPaint(oldPaint);
+        canvas.setColor(oldColor);
+        canvas.setStroke(oldStroke);
     }
 }
