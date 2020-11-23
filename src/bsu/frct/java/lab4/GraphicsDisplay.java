@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.*;
 
-
 public class GraphicsDisplay extends JPanel {
     private Double[][] graphicsData;
     private double minX,
