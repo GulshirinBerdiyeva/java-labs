@@ -25,26 +25,21 @@ public class GraphicsDisplay extends JPanel {
 
     public GraphicsDisplay(){
         setBackground(Color.PINK);
-
         graphicsStroke = new BasicStroke(4.0f, BasicStroke.CAP_ROUND,
                                          BasicStroke.JOIN_ROUND, 10.0f,
                                          new float[]{20, 5, 5, 5, 10, 5, 5, 5},
                                         0.0f);
-
         axisStroke = new BasicStroke(4.0f, BasicStroke.CAP_BUTT,
                                      BasicStroke.JOIN_MITER, 10.0f,
                                     null, 0.0f);
-
         markerStroke = new BasicStroke(3.0f, BasicStroke.CAP_BUTT,
                                        BasicStroke.JOIN_MITER, 10.0f,
                                        null, 0.0f);
-
-        gridStroke = new BasicStroke(1.f, BasicStroke.CAP_BUTT,
+        gridStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
                                     BasicStroke.JOIN_MITER, 10.0f,
                                     null, 0.0f);
-
         axisFont = new Font("Serif", Font.BOLD, 36);
-        divisionsFont = new Font("Serif", 0, 15);
+        divisionsFont = new Font("Serif", Font.PLAIN, 16);
     }
 
     public void showGraphics(Double[][] graphicsData){
