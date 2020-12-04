@@ -303,6 +303,10 @@ public class GraphicsDisplay extends JPanel {
         }
     }
 
+    public ArrayList<Double[]> getGraphicsData() {
+        return graphicsData;
+    }
+
     public void reset() {
         this.displayGraphics(this.originalData);
     }

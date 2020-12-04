@@ -2,12 +2,10 @@ package bsu.frct.java.lab5;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -24,6 +22,8 @@ public class MainFrame extends JFrame {
     private JMenuItem resetGraphicsMenuItem;
     private GraphicsDisplay display = new GraphicsDisplay();
     private boolean fileLoaded = false;
+    private JMenuItem saveToTextMenuItem;
+    private DecimalFormat formatter = new DecimalFormat("###.#####");
 
     public MainFrame() {
         super("Обработка событий от мыши");
@@ -44,9 +44,28 @@ public class MainFrame extends JFrame {
 
                 MainFrame.this.fileChooser.showOpenDialog(MainFrame.this);
                 MainFrame.this.openGraphics(MainFrame.this.fileChooser.getSelectedFile());
+                saveToTextMenuItem.setEnabled(true);
+
             }
         };
         fileMenu.add(openGraphicsAction);
+
+        Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(fileChooser == null){
+                    fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File("."));
+                }
+                if (fileChooser.showSaveDialog(MainFrame.this) ==
+                        JFileChooser.APPROVE_OPTION){
+                    saveToTextFile(fileChooser.getSelectedFile());
+                }
+            }
+        };
+        saveToTextMenuItem = fileMenu.add(saveToTextAction);
+        saveToTextMenuItem.setEnabled(false);
+
         Action resetGraphicsAction = new AbstractAction("Отменить все изменения") {
             public void actionPerformed(ActionEvent event) {
                 MainFrame.this.display.reset();
@@ -80,6 +99,30 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Ошибка чтения координат точек из файла", "Ошибка загрузки данных", 2);
         }
     }
+
+    private void saveToTextFile(File selectedFile) {
+        try {
+            FileWriter writer = new FileWriter(selectedFile);
+            ArrayList<Double[]> originalData = display.getGraphicsData();
+            Iterator iter = originalData.iterator();
+
+            while(iter.hasNext()) {
+                Double[] point = (Double[])iter.next();
+                for(int i = 0; i < 2; i++){
+                    writer.write(String.valueOf(formatter.format(point[i])));
+                    int a = formatter.format(point[i]).toString().length();
+                    for (int l = 1; l < (30 - a); l++) {
+                        writer.write(" ");
+                    }
+                }
+                writer.write("\n");
+                }
+            writer.flush();
+        }catch (IOException e){
+            System.out.println("File couldn't be created");
+        }
+    }
+
 
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
