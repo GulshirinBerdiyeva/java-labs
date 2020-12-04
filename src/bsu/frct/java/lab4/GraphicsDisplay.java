@@ -181,7 +181,7 @@ public class GraphicsDisplay extends JPanel {
         canvas.setStroke(gridStroke);
 
         double from = minX,
-               step = (maxX - minX) / 20;
+               step = (maxX - minX) / 10;
         while (from < maxX){
             canvas.draw(new Line2D.Double(xyToPoint(from, maxY),
                     xyToPoint(from, minY)));
@@ -189,7 +189,7 @@ public class GraphicsDisplay extends JPanel {
         }
 
         from = minY;
-        step = (maxY - minY) / 20;
+        step = (maxY - minY) / 10;
         while (from < maxY){
             canvas.draw(new Line2D.Double(xyToPoint(minX, from),
                     xyToPoint(maxX, from)));
@@ -198,7 +198,6 @@ public class GraphicsDisplay extends JPanel {
     }
 
     protected void paintDevisions(Graphics2D canvas){
-        canvas.setColor(Color.BLACK);
         canvas.setFont(divisionsFont);
 
         double x,
@@ -212,25 +211,33 @@ public class GraphicsDisplay extends JPanel {
         else
             y = minY;
 
-        double from = minX,
-               step = (maxX - minX) / 20;
-        while (from < maxX){
+        double from = Math.ceil(minX),
+               step = Math.ceil((maxX - minX) / 10);
+        while (from < Math.ceil(maxX)){
             Point2D.Double point = xyToPoint(from, y);
-            String num = String.valueOf(Math.ceil(from));
+            String num = String.valueOf(from);
             canvas.drawString(num,
                               (float)(point.getX() + 10),
                               (float) (point.getY() - 10));
+            canvas.drawString("|",
+                    (float)(point.getX()),
+                    (float) (point.getY()));
+
             from += step;
         }
 
-        from = minY;
-        step = (maxY - minY) / 20;
-        while (from < maxY){
+        from = Math.ceil(minY);
+        step = Math.ceil((maxY - minY) / 10);
+        while (from < Math.ceil(maxY)){
             Point2D.Double point = xyToPoint(x, from);
             String num = String.valueOf(Math.ceil(from));
             canvas.drawString(num,
                     (float)(point.getX() + 10),
                     (float) (point.getY() - 10));
+            canvas.drawString("__",
+                    (float)(point.getX()),
+                    (float) (point.getY()));
+
             from += step;
         }
     }
