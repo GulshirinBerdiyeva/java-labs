@@ -10,6 +10,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
@@ -41,15 +43,30 @@ public class GraphicsDisplay extends JPanel {
     private boolean changeMode = false;
     private double[] originalPoint = new double[2];
     private java.awt.geom.Rectangle2D.Double selectionRect = new java.awt.geom.Rectangle2D.Double();
+    private boolean showAxis = true,
+            showMarkers = true,
+            showGrid = true,
+            showRotate = false;
+    private BasicStroke graphicsStroke;
 
     public GraphicsDisplay() {
-        this.setBackground(Color.WHITE);
-        this.axisStroke = new BasicStroke(2.0F, 0, 0, 10.0F, (float[])null, 0.0F);
-        this.gridStroke = new BasicStroke(1.0F, 0, 0, 10.0F, new float[]{4.0F, 4.0F}, 0.0F);
-        this.markerStroke = new BasicStroke(1.0F, 0, 0, 10.0F, (float[])null, 0.0F);
+        setBackground(Color.PINK);
+        graphicsStroke = new BasicStroke(4.0f, BasicStroke.CAP_ROUND,
+                BasicStroke.JOIN_ROUND, 10.0f,
+                new float[]{20, 5, 5, 5, 10, 5, 5, 5},
+                0.0f);
+        axisStroke = new BasicStroke(4.0f, BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER, 10.0f,
+                null, 0.0f);
+        markerStroke = new BasicStroke(3.0f, BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER, 10.0f,
+                null, 0.0f);
+        gridStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER, 10.0f,
+                null, 0.0f);
         this.selectionStroke = new BasicStroke(1.0F, 0, 0, 10.0F, new float[]{10.0F, 10.0F}, 0.0F);
         this.axisFont = new Font("Serif", 1, 36);
-        this.labelsFont = new Font("Serif", 0, 10);
+        this.labelsFont = new Font("Serif", 0, 16);
         formatter.setMaximumFractionDigits(5);
         this.addMouseListener(new GraphicsDisplay.MouseHandler());
         this.addMouseMotionListener(new GraphicsDisplay.MouseMotionHandler());
@@ -98,11 +115,17 @@ public class GraphicsDisplay extends JPanel {
         this.scaleY = this.getSize().getHeight() / (this.viewport[0][1] - this.viewport[1][1]);
         if (this.graphicsData != null && this.graphicsData.size() != 0) {
             Graphics2D canvas = (Graphics2D)g;
-            this.paintGrid(canvas);
-            this.paintAxis(canvas);
+            if(showRotate)
+                rotate(canvas);
+            if (showGrid)
+                this.paintGrid(canvas);
+            if (showAxis) {
+                this.paintAxis(canvas);
+                this.paintLabels(canvas);
+            }
             this.paintGraphics(canvas);
-            this.paintMarkers(canvas);
-            this.paintLabels(canvas);
+            if (showMarkers)
+                this.paintMarkers(canvas);
             this.paintSelection(canvas);
         }
     }
@@ -116,7 +139,7 @@ public class GraphicsDisplay extends JPanel {
     }
 
     private void paintGraphics(Graphics2D canvas) {
-        canvas.setStroke(this.markerStroke);
+        canvas.setStroke(this.graphicsStroke);
         canvas.setColor(Color.RED);
         Double currentX = null;
         Double currentY = null;
@@ -139,42 +162,35 @@ public class GraphicsDisplay extends JPanel {
     private void paintMarkers(Graphics2D canvas) {
         canvas.setStroke(this.markerStroke);
         canvas.setColor(Color.RED);
-        canvas.setPaint(Color.RED);
-        java.awt.geom.Ellipse2D.Double lastMarker = null;
-        int i = -1;
         Iterator var5 = this.graphicsData.iterator();
 
-        while(var5.hasNext()) {
-            Double[] point = (Double[])var5.next();
-            ++i;
-            if (point[0] >= this.viewport[0][0] && point[1] <= this.viewport[0][1] && point[0] <= this.viewport[1][0] && point[1] >= this.viewport[1][1]) {
-                byte radius;
-                if (i == this.selectedMarker) {
-                    radius = 6;
-                } else {
-                    radius = 3;
-                }
+        while (var5.hasNext()) {
+            Double[] point = (Double[]) var5.next();
+            Integer countableX = point[0].intValue();
+            Integer countableY = point[1].intValue();
+            if (countableX % 2 == 0 && countableY % 2 == 0)
+                canvas.setColor(Color.BLUE);
+            else
+                canvas.setColor(Color.RED);
 
-                java.awt.geom.Ellipse2D.Double marker = new java.awt.geom.Ellipse2D.Double();
-                Point2D center = this.translateXYtoPoint(point[0], point[1]);
-                Point2D corner = new java.awt.geom.Point2D.Double(center.getX() + (double)radius, center.getY() + (double)radius);
-                marker.setFrameFromCenter(center, corner);
-                if (i == this.selectedMarker) {
-                    lastMarker = marker;
-                } else {
-                    canvas.draw(marker);
-                    canvas.fill(marker);
-                }
-            }
+            Point2D.Double center = translateXYtoPoint(point[0], point[1]);
+
+            canvas.draw(new Line2D.Double(shiftPoint(center, 10, 0),
+                    shiftPoint(center, -10, 0)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 0, 10),
+                    shiftPoint(center, 0, -10)));
+
+            canvas.draw(new Line2D.Double(shiftPoint(center, 10, 5),
+                    shiftPoint(center, 10, -5)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, -10, 5),
+                    shiftPoint(center, -10, -5)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 5, 10),
+                    shiftPoint(center, -5, 10)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 5, -10),
+                    shiftPoint(center, -5, -10)));
+
+
         }
-
-        if (lastMarker != null) {
-            canvas.setColor(Color.BLUE);
-            canvas.setPaint(Color.BLUE);
-            canvas.draw(lastMarker);
-            canvas.fill(lastMarker);
-        }
-
     }
 
     private void paintLabels(Graphics2D canvas) {
@@ -229,7 +245,6 @@ public class GraphicsDisplay extends JPanel {
 
     private void paintGrid(Graphics2D canvas) {
         canvas.setStroke(this.gridStroke);
-        canvas.setColor(Color.GRAY);
         double pos = this.viewport[0][0];
 
         double step;
@@ -274,6 +289,20 @@ public class GraphicsDisplay extends JPanel {
 
     }
 
+    protected void rotate(Graphics2D canvas){
+        AffineTransform transform = AffineTransform.getRotateInstance(
+                -Math.PI / 2,
+                getSize().getWidth() / 2,
+                getSize().getHeight() / 2);
+        transform.concatenate(new AffineTransform(
+                getSize().getHeight() / getSize().getWidth(),0.0, 0.0,
+                getSize().getWidth() / getSize().getHeight(),
+                (getSize().getWidth() - getSize().getHeight()) / 2,
+                (getSize().getHeight() - getSize().getWidth()) / 2));
+        canvas.setTransform(transform);
+    }
+
+
     protected java.awt.geom.Point2D.Double translateXYtoPoint(double x, double y) {
         double deltaX = x - this.viewport[0][0];
         double deltaY = this.viewport[0][1] - y;
@@ -283,6 +312,14 @@ public class GraphicsDisplay extends JPanel {
     protected double[] translatePointToXY(int x, int y) {
         return new double[]{this.viewport[0][0] + (double)x / this.scaleX, this.viewport[0][1] - (double)y / this.scaleY};
     }
+
+    protected Point2D.Double shiftPoint(Point2D.Double src,
+                                        double deltaX, double deltaY){
+        Point2D.Double dest = new Point2D.Double();
+        dest.setLocation(src.getX() + deltaX, src.getY() + deltaY);
+        return dest;
+    }
+
 
     protected int findSelectedPoint(int x, int y) {
         if (this.graphicsData == null) {
@@ -309,6 +346,26 @@ public class GraphicsDisplay extends JPanel {
 
     public void reset() {
         this.displayGraphics(this.originalData);
+    }
+
+    public void setShowAxis(boolean showAxis) {
+        this.showAxis = showAxis;
+        repaint();
+    }
+
+    public void setShowMarkers(boolean showMarkers) {
+        this.showMarkers = showMarkers;
+        repaint();
+    }
+
+    public void setShowGrid(boolean showGrid) {
+        this.showGrid = showGrid;
+        repaint();
+    }
+
+    public void setShowRotate(boolean antiClockRotate) {
+        this.showRotate = antiClockRotate;
+        repaint();
     }
 
     public class MouseHandler extends MouseAdapter {
