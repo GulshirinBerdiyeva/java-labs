@@ -1,5 +1,7 @@
 package bsu.frct.java.lab6;
 
+import bsu.frct.java.lab6.control.Field;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

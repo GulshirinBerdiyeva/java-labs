@@ -1,4 +1,6 @@
-package bsu.frct.java.lab6;
+package bsu.frct.java.lab6.entity;
+
+import bsu.frct.java.lab6.control.Field;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -20,7 +22,7 @@ public class BouncingBall implements Runnable{
         this.field = field;
         radius = new Double(Math.random() * (MAX_RADIUS - MIN_RADIUS)).intValue() + MIN_RADIUS;
         speed = new Double(Math.round(5 * MAX_SPEED / radius)).intValue();
-        if (speed>MAX_SPEED) {
+        if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
         }
         double angle = Math.random() * 2 * Math.PI;
@@ -29,11 +31,40 @@ public class BouncingBall implements Runnable{
         color = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
         x = Math.random() * (field.getSize().getWidth() - 2 * radius) + radius;
         y = Math.random() * (field.getSize().getHeight() - 2 * radius) + radius;
+
         Thread thisThread = new Thread(this);
         thisThread.start();
     }
 
-        @Override
+    public int getRadius() {
+        return radius;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setSpeedX(double speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(double speedY) {
+        this.speedY = speedY;
+    }
+
+    @Override
     public void run() {
         try {
             while (true) {
