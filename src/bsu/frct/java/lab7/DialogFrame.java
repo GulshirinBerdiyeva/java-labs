@@ -94,13 +94,13 @@ public class DialogFrame extends JFrame {
                 return;
             }
 
-            Socket e = new Socket(user.getAddress(), frame.getServerPort());
-            DataOutputStream out = new DataOutputStream(e.getOutputStream());
+            Socket socket = new Socket(user.getAddress(), frame.getServerPort());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(frame.getLogin().getText());
             out.writeUTF(textAreaOut.getText());
             out.writeUTF(user.getName());
             out.writeUTF("true");
-            e.close();
+            socket.close();
             textAreaIn.append(date + " I: " + textAreaOut.getText() + "\n");
             textAreaOut.setText("");
         } catch (UnknownHostException var6) {

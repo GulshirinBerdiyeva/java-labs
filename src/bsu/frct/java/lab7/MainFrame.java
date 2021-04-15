@@ -157,12 +157,11 @@ public class MainFrame extends JFrame {
                 JOptionPane.showMessageDialog(MainFrame.this, register,
                                             "User registration", JOptionPane.INFORMATION_MESSAGE);
 
+                if(!name.getText().isEmpty() && !address.getText().isEmpty()) {
+                    listOfUsers = listOfUsers.plusUser(name.getText(),address.getText());
+                }
             }
         });
-        if(!name.getText().isEmpty() && !address.getText().isEmpty()) {
-            listOfUsers = listOfUsers.plusUser(name.getText(),address.getText());
-        }
-
 
         final JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new ActionListener() {
@@ -339,11 +338,9 @@ public class MainFrame extends JFrame {
     public JTextField getLogin() { return login; }
     public static int getServerPort() { return SERVER_PORT; }
     public String getDateTime() {
-
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
-
     }
 
     private void sendMessage() {
