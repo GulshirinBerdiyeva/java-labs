@@ -1,1 +1,0 @@
-# Lab_6_Multithreaded_Programming
